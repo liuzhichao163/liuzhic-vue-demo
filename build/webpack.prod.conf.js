@@ -10,7 +10,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-
+const ZipPlugin  = require('zip-webpack-plugin')
 
 const env = require('../config/prod.env')
 
@@ -33,6 +33,10 @@ const webpackConfig = merge(baseWebpackConfig, {
     new webpack.DefinePlugin({
       'process.env': env
     }),
+    new ZipPlugin({
+      path:path.join(__dirname,'../dist'),
+      filename: 'dist.zip'
+    }),
     new UglifyJsPlugin({
       uglifyOptions: {
         compress: {
@@ -41,10 +45,6 @@ const webpackConfig = merge(baseWebpackConfig, {
       },
       sourceMap: config.build.productionSourceMap,
       parallel: true
-    }),
-    new ZipPlugin({
-      path:path.join(__dirname,'../dist'),
-      filename: 'dist.zip'
     }),
     // extract css into its own file
     new ExtractTextPlugin({
